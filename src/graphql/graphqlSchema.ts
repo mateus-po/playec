@@ -1,6 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-
 import userTypeDefs from './user/userTypeDefs.js';
 import userResolvers from './user/userResolvers.js';
 

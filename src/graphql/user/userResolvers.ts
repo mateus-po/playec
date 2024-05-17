@@ -1,5 +1,12 @@
-import { UserType, createUserWithPasswordInput } from '../../types/User.js';
+import {
+    UserError,
+    createUserWithPasswordInput,
+    logInUserWithPasswordInput,
+    UserQuery,
+} from '../../types/User.js';
 import createUserWithPassword from '../../services/user/createUserWithPassword.js';
+import logInUserWithPassword from '../../services/user/logInUserWithPassword.js';
+import User from '../../models/User.js';
 
 const userResolvers = {
     Query: {
@@ -9,7 +16,12 @@ const userResolvers = {
         createUserWithPassword: async (
             _parent: any,
             { input }: { input: createUserWithPasswordInput }
-        ): Promise<UserType> => await createUserWithPassword(input),
+        ): Promise<UserQuery | UserError> =>
+            await createUserWithPassword(input),
+        logInUserWithPassword: async (
+            _parent: any,
+            { input }: { input: logInUserWithPasswordInput }
+        ): Promise<UserQuery | UserError> => await logInUserWithPassword(input),
     },
 };
 

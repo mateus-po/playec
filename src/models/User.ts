@@ -5,7 +5,9 @@ import { UserType } from '../types/User.js';
 
 const { isEmail } = validator;
 
-export interface UserInterface extends Document, UserType {}
+export interface UserInterface extends Document, UserType {
+    password: string;
+}
 
 type UserModel = Model<UserInterface, {}, {}>;
 

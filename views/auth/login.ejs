@@ -7,5 +7,46 @@
 </head>
 <body>
     <h1>Log In</h1>
+    <form id="LoginFrom">
+        <label for="emailOrnickname">Email or Nickname</label><br>
+        <input type="text" name="emailOrnickname" id="EmailOrnicknameinput"><br>
+        <label for="password">Password</label><br>
+        <input type="password" name="password" id="PasswordInput"><br>
+        <button id="LoginSubmit">login</button>
+    </form>
+
+    <script>
+        const loginSubmitButton = document.getElementById('LoginSubmit')
+        loginSubmitButton.addEventListener('click', async (e) => {
+            e.preventDefault()
+
+            const emailOrnickname = document.getElementById('EmailOrnicknameinput').value
+            const password = document.getElementById('PasswordInput').value
+
+            const response = await fetch('/graphql', {
+                method: 'POST',
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    query: `mutation logInUserWithPassword {
+                        logInUserWithPassword(input: {email: "test@test.pl", password: "testeq21123"}) {
+                            user {
+                            email
+                            nickname
+                            admin
+                            description
+                            }
+                            error
+                        }
+                        }`
+                })
+                })
+
+            console.log( await response.json())
+        })
+    </script>
 </body>
 </html>

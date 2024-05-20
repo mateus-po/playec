@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import connectDb from './config/db.js';
 import dotenv from 'dotenv';
 import appRouter from './routes/appRouter.js';
@@ -8,6 +8,7 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import http from 'http';
 import bodyParser from 'body-parser';
 import schema from './graphql/graphqlSchema.js';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -27,9 +28,19 @@ app.set('view engine', 'ejs');
 
 app.use(express.static('public'));
 
+app.use(cookieParser());
+
 app.use('/', appRouter);
 
-app.use('/graphql', bodyParser.json(), expressMiddleware(graphqlServer));
+app.use(
+    '/graphql',
+    bodyParser.json(),
+    expressMiddleware(graphqlServer, {
+        context: async ({ req, res }) => {
+            return { req, res };
+        },
+    })
+);
 
 httpServer.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

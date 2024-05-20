@@ -6,7 +6,8 @@ import {
 } from '../../types/User.js';
 import createUserWithPassword from '../../services/user/createUserWithPassword.js';
 import logInUserWithPassword from '../../services/user/logInUserWithPassword.js';
-import User from '../../models/User.js';
+import { Response } from 'express';
+import { BaseContext } from '@apollo/server';
 
 const userResolvers = {
     Query: {
@@ -20,8 +21,10 @@ const userResolvers = {
             await createUserWithPassword(input),
         logInUserWithPassword: async (
             _parent: any,
-            { input }: { input: logInUserWithPasswordInput }
-        ): Promise<UserQuery | UserError> => await logInUserWithPassword(input),
+            { input }: { input: logInUserWithPasswordInput },
+            context: any
+        ): Promise<UserQuery | UserError> =>
+            await logInUserWithPassword(input, context.res),
     },
 };
 
